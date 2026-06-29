@@ -1,5 +1,6 @@
 from typing import Dict
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -46,4 +47,20 @@ def hello(name: str):
 def search(query: str):
     return {
         "search": f"{query}"
+    }
+
+class Employee(BaseModel):
+    name: str
+    age: int
+    city: str
+
+@app.post("/register")
+def create_employee(employee: Employee):
+    return {
+        "message": "Employee Created Succesfully",
+        "employee": {
+            name: employee.name,
+            age: employee.age,
+            city: employee.city
+        }
     }
